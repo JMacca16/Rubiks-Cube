@@ -15,23 +15,30 @@ class cube:
     def face_turn_clockwise(self, face: str):
         self.faces[face] = np.rot90(self.faces[face], -1)
 
-        if face == 'White':
+        if face == "White":
             # Top Row Moves (Red <- Blue <- Orange <- Green <- Red)
-            temp_red = self.faces['Red'][0, :].copy()
-            self.faces['Red'][0, :] = self.faces['Blue'][0, :]
-            self.faces['Blue'][0, :] = self.faces['Orange'][0, :]
-            self.faces['Orange'][0, :] = self.faces['Green'][0, :]
-            self.faces['Green'][0, :] = temp_red
+            temp_red = self.faces["Red"][0, :].copy()
+            self.faces["Red"][0, :] = self.faces["Blue"][0, :]
+            self.faces["Blue"][0, :] = self.faces["Orange"][0, :]
+            self.faces["Orange"][0, :] = self.faces["Green"][0, :]
+            self.faces["Green"][0, :] = temp_red
 
-        if face == 'Yellow':
+        if face == "Yellow":
             # Bottom Row Moves (Red <- Green <- Orange <- Blue <- Red
-            temp_red = self.faces['Yellow'][2, :].copy()
-            self.faces['Green'][2, :] = self.faces['Orange']
+            temp_red = self.faces["Red"][2, :].copy()
+            self.faces["Red"][2, :] = self.faces["Green"][2, :]
+            self.faces["Green"][2, :] = self.faces["Orange"][2, :]
+            self.faces["Orange"][2, :] = self.faces["Blue"][2, :]
+            self.faces["Blue"][2, :] = temp_red
 
-        if face == 'Red':
-            # Left Row Moves (White <- Blue
-            temp_red = self.faces['Red'][0, :].copy()
-            self.faces['White'][2, :] = self.faces['Green'][:, 2]
+        if face == "Red":
+            # Left Row Moves (White <- Green <- Yellow <- Blue <- White)
+            temp_white = self.faces["White"][2, :]
+            self.faces["White"][2, :] = self.faces["Green"][:, 2]
+            self.faces["Green"][:, 2] = self.faces["Yellow"][:, 0]
+            self.faces["Yellow"][0, :] = self.faces["Blue"][0, :]
+            self.faces["Blue"][:, 0] = temp_white
+
 
     def face_turn_anticlockwise(self, face: list):
         self.faces[face] = np.rot90(self.faces[face], -1)
@@ -53,5 +60,5 @@ class cube:
 
 
 my_cube = cube()
-my_cube.face_turn_clockwise('White')
+my_cube.face_turn_clockwise('Red')
 my_cube.print_cube()
